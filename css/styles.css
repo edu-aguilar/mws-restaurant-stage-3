@@ -7,6 +7,10 @@ html, body {
   margin: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   display: grid;
   grid-template-rows: 67px 1fr 67px;
@@ -126,35 +130,50 @@ nav h1 a {
     text-decoration: underline;
 }
 /* ====================== Map ====================== */
-#map {
-  height: 250px;
+section.map-wrapper {
+  height: 180px;
   width: 100%;
   background-color: #ccc;
 }
-/* ====================== Restaurant Filtering ====================== */
-.filter-options {
-  width: 100%;
-  height: 50px;
-  background-color: #3397DB;
-  align-items: center;
+
+.map-wrapper #map {
+  height: 100%;
 }
-.filter-options h2 {
+/* ====================== Restaurant Filtering ====================== */
+
+.restaurants-filtering {
+  width: 100%;
+  background-color: #3397DB;
+  padding: 0.5rem 1rem;
+}
+
+.restaurants-filtering h2 {
   color: white;
   font-size: 1rem;
   font-weight: normal;
   line-height: 1;
-  margin: 0 20px;
+  margin: 0;
 }
-.filter-options select {
+
+.restaurants-filtering .filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.restaurants-filtering .filters > select {
+  width: 45%;
+}
+
+.restaurants-filtering select {
   background-color: white;
   border: 1px solid #fff;
   font-family: Arial,sans-serif;
   font-size: 11pt;
-  height: 35px;
+  min-height: 30px;
   letter-spacing: 0;
-  margin: 10px;
-  padding: 0 10px;
-  width: 200px;
+  padding: 0 5px;
 }
 
 /* ====================== Restaurant Listing ====================== */
