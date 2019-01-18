@@ -9,7 +9,7 @@ html, body {
 
 body {
   display: grid;
-  grid-template-rows: 67px 1fr 80px;
+  grid-template-rows: 67px 1fr 67px;
   grid-template-columns: 1fr;
   grid-template-areas: "header" "main" "footer";
 }
@@ -27,6 +27,18 @@ main {
 
 footer {
   grid-area: footer;
+  background-color: #444;
+  color: #aaa;
+  font-size: 8pt;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+}
+
+footer span {
+  align-self: center;
+  text-align: center;
+  padding: 0 1rem;
 }
 
 body, td, th, p {
@@ -56,22 +68,13 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0 0 20px;
 }
-article, aside, canvas, details, figcaption, figure, footer, hgroup, menu, nav, section {
+article, aside, canvas, details, figcaption, figure, hgroup, menu, nav, section {
 	display: block;
 }
 #maincontent {
   background-color: #f3f3f3;
-  min-height: 100%;
 }
-#footer {
-  background-color: #444;
-  color: #aaa;
-  font-size: 8pt;
-  letter-spacing: 1px;
-  padding: 25px;
-  text-align: center;
-  text-transform: uppercase;
-}
+
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;
@@ -84,7 +87,7 @@ nav h1 {
 }
 nav h1 a {
   color: #fff;
-  font-size: 14pt;
+  font-size: 1.2rem;
   font-weight: 200;
   letter-spacing: 10px;
   text-transform: uppercase;
@@ -124,7 +127,7 @@ nav h1 a {
 }
 /* ====================== Map ====================== */
 #map {
-  height: 400px;
+  height: 250px;
   width: 100%;
   background-color: #ccc;
 }
@@ -227,11 +230,7 @@ nav h1 a {
   height: 100%;
   width: 100%;
 }
-.inside #footer {
-  bottom: 0;
-  position: absolute;
-  width: 50%;
-}
+
 #restaurant-name {
   color: #f18200;
   font-family: Arial,sans-serif;
