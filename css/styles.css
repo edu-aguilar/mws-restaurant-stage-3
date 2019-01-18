@@ -4,7 +4,11 @@
 html, body {
   width: 100%;
   margin: 0;
+}
+
+:root {
   --header-height: 67px;
+  --map-height: 180px;
 }
 
 * {
@@ -142,12 +146,13 @@ nav h1 a {
 }
 /* ====================== Map ====================== */
 section.map-wrapper {
-  height: 180px;
+  height: var(--map-height, 180px);
   width: 100%;
   background-color: #ccc;
+  transition: ease 0.3s;
 }
 
-.map-wrapper #map {
+section.map-wrapper #map {
   height: 100%;
 }
 /* ====================== Restaurant Filtering ====================== */
@@ -192,7 +197,7 @@ section.map-wrapper {
   background-color: #f3f3f3;
   list-style: outside none none;
   margin: 0;
-  padding: 1rem;
+  padding: 2rem;
   text-align: center;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -203,6 +208,8 @@ section.map-wrapper {
   border: 2px solid #ccc;
   font-family: Arial,sans-serif;
   text-align: left;
+  display: grid;
+  grid-template-rows: auto 1fr 40px;
 }
 
 .restaurants li .restaurant-info-wrapper {
@@ -230,16 +237,53 @@ section.map-wrapper {
 }
 .restaurants li a {
   background-color: orange;
-  border-bottom: 3px solid #eee;
   color: #fff;
   font-size: 10pt;
   padding: 8px 30px 10px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  width: fit-content;
-  margin: 1rem auto 0 auto;
+  margin: 0 auto;
   display: block;
+  width: 80%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+@media screen and (min-width: 600px) {
+
+  :root {
+    --map-height: 360px;
+  }
+
+  .restaurants {
+    grid-gap: 2rem;
+  }
+  .restaurants-filtering {
+    padding: 1rem 2rem;
+  }
+  .restaurants-filtering .filters {
+    justify-content: flex-start;
+  }
+  .restaurants-filtering .filters > select {
+    width: 30%;
+  }
+  .restaurants-filtering .filters > select + select {
+    margin-left: 1rem;
+  }
+
+}
+
+@media screen and (min-width: 800px) {
+
+  .restaurants-filtering .filters > select {
+    width: 20%;
+  }
+
+  .restaurants {
+    grid-gap: 3rem;
+  }
+
 }
 
 /* ====================== Restaurant Details ====================== */
