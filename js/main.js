@@ -2,7 +2,7 @@ let restaurants,
   neighborhoods,
   cuisines
 var newMap
-var markers = []
+var markers = [];
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -11,7 +11,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
   initMap(); // added 
   fetchNeighborhoods();
   fetchCuisines();
+  setHeaderBehavior();
 });
+
+const setHeaderBehavior = () => {
+  let prevScrollpos = window.pageYOffset;
+  let headerElem = document.querySelector("body > header");
+
+  window.onscroll = () => {
+    var currentScrollPos = window.pageYOffset;
+
+    if (currentScrollPos > 67) {
+      headerElem.style.top = prevScrollpos > currentScrollPos ? '0' : '-67px';
+    }
+    prevScrollpos = currentScrollPos;
+
+  }
+}
 
 /**
  * Fetch all neighborhoods and set their HTML.
