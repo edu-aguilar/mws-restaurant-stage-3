@@ -9,6 +9,7 @@ html, body {
 :root {
   --header-height: 67px;
   --map-height: 180px;
+  --box-gutter: 1rem;
 }
 
 * {
@@ -160,7 +161,7 @@ section.map-wrapper #map {
 .restaurants-filtering {
   width: 100%;
   background-color: #3397DB;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem var(--box-gutter, 1rem);
 }
 
 .restaurants-filtering h2 {
@@ -197,11 +198,11 @@ section.map-wrapper #map {
   background-color: #f3f3f3;
   list-style: outside none none;
   margin: 0;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  grid-gap: 1rem;
+  grid-gap: var(--box-gutter, 1rem);
 }
 .restaurants li {
   background-color: #fff;
@@ -254,13 +255,15 @@ section.map-wrapper #map {
 
   :root {
     --map-height: 360px;
+    --box-gutter: 2rem;
   }
 
   .restaurants {
-    grid-gap: 2rem;
+    padding: var(--box-gutter, 2rem);
+    grid-gap: var(--box-gutter, 2rem);
   }
   .restaurants-filtering {
-    padding: 1rem 2rem;
+    padding: 1rem var(--box-gutter, 2rem);;
   }
   .restaurants-filtering .filters {
     justify-content: flex-start;
@@ -276,14 +279,20 @@ section.map-wrapper #map {
 
 @media screen and (min-width: 800px) {
 
-  .restaurants-filtering .filters > select {
-    width: 20%;
+  :root {
+    --box-gutter: 3rem;
   }
 
   .restaurants {
-    grid-gap: 3rem;
+    padding: var(--box-gutter, 3rem);
+    grid-gap: var(--box-gutter, 3rem);
   }
-
+  .restaurants-filtering {
+    padding: 1rem var(--box-gutter, 3rem);;
+  }
+  .restaurants-filtering .filters > select {
+    width: 20%;
+  }
 }
 
 /* ====================== Restaurant Details ====================== */
