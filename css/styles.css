@@ -4,6 +4,7 @@
 html, body {
   width: 100%;
   margin: 0;
+  --header-height: 67px;
 }
 
 * {
@@ -12,7 +13,7 @@ html, body {
 
 body {
   display: grid;
-  grid-template-rows: 67px 1fr 67px;
+  grid-template-rows: var(--header-height, 67px) 1fr var(--header-height, 67px);
   grid-template-columns: 1fr;
   grid-template-areas: "header" "main" "footer";
 }
@@ -27,6 +28,7 @@ header {
   top: 0;
   width: 100%;
   display: block;
+  height: var(--header-height, 67px);
 }
 
 main {
@@ -179,7 +181,7 @@ section.map-wrapper {
   border: 1px solid #fff;
   font-family: Arial,sans-serif;
   font-size: 11pt;
-  min-height: 30px;
+  height: 30px;
   letter-spacing: 0;
   padding: 0 5px;
 }
