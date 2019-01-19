@@ -130,7 +130,7 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
+    color: var(--blue-700, #0E44DE);
     text-decoration: none;
 }
 
@@ -327,7 +327,7 @@ body.restaurant-view {
   grid-area: reviews;
 }
 .reviews-wrapper h1 {
-  color: #f58500;
+  color: var(--orange-700, #D43900);
   font-size: 20pt;
   font-weight: 200;
   letter-spacing: 0;
