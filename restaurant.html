@@ -32,16 +32,16 @@
       <div id="map"></div>
     </section>
 
-    <section class="restaurant-wrapper" id="restaurant-container">
+    <section class="restaurant-wrapper" id="restaurant-container" aria-label="Restaurant info" role="region" tabindex="0">
       <h1 class="restaurant-name" id="restaurant-name"></h1>
       <img id="restaurant-img">
       <p id="restaurant-cuisine" class="restaurant-cuisine"></p>
-      <p id="restaurant-address"></p>
+      <p id="restaurant-address" tabindex="0"></p>
       <table id="restaurant-hours" class="restaurant-hours"></table>
     </section>
 
-    <section id="reviews-container" class="reviews-wrapper">
-      <ul id="reviews-list" class="reviews-list"></ul>
+    <section id="reviews-container" class="reviews-wrapper" role="region">
+      <ul id="reviews-list" class="reviews-list" tabindex="0" aria-label="Restaurant reviews"></ul>
     </section>
 
   </main>
