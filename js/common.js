@@ -1,5 +1,6 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('load', (event) => {
   setHeaderBehavior();
+  hideMapLibraryLinks();
 });
 
 const setHeaderBehavior = () => {
@@ -16,4 +17,9 @@ const setHeaderBehavior = () => {
     prevScrollpos = currentScrollPos;
 
   }
+}
+
+const hideMapLibraryLinks = () => {
+  let mapLinks = document.querySelectorAll('div.leaflet-bottom.leaflet-right');
+  mapLinks.forEach(map => map.style.visibility = 'hidden');
 }
