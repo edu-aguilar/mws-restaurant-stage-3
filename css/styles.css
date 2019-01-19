@@ -78,7 +78,7 @@ a {
 	text-decoration: none;
 }
 a:hover, a:focus {
-	color: var(--blue-700, #0E44DE);
+	color: var(--orange-700, #D43900);
 	text-decoration: none;
 }
 a img{
