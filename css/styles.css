@@ -10,6 +10,8 @@ html, body {
   --header-height: 67px;
   --map-height: 180px;
   --box-gutter: 1rem;
+  --blue-700: #0E44DE;
+  --orange-700: #D43900;
 }
 
 * {
@@ -56,6 +58,7 @@ footer span {
   text-align: center;
   padding: 0 1rem;
   margin: 0 auto;
+  color: #F2F1EF;
 }
 
 body, td, th, p {
@@ -75,7 +78,7 @@ a {
 	text-decoration: none;
 }
 a:hover, a:focus {
-	color: #3397db;
+	color: var(--blue-700, #0E44DE);
 	text-decoration: none;
 }
 a img{
@@ -152,7 +155,7 @@ section.map-wrapper #map {
 
 .restaurants-filtering {
   width: 100%;
-  background-color: #3397DB;
+  background-color: var(--blue-700, #0E44DE);
   padding: 0.5rem var(--box-gutter, 1rem);
 }
 
@@ -215,7 +218,7 @@ section.map-wrapper #map {
   max-width: 100%;
 }
 .restaurants li h1 {
-  color: #f18200;
+  color: var(--orange-700, #D43900);
   font-family: Arial,sans-serif;
   font-size: 14pt;
   font-weight: 200;
@@ -229,7 +232,7 @@ section.map-wrapper #map {
   font-size: 11pt;
 }
 .restaurants li a {
-  background-color: orange;
+  background-color: var(--orange-700, #D43900);
   color: #fff;
   font-size: 10pt;
   padding: 8px 30px 10px;
@@ -281,7 +284,7 @@ body.restaurant-view {
 }
 
 .restaurant-name {
-  color: #f18200;
+  color: var(--orange-700, #D43900);
   font-family: Arial,sans-serif;
   font-size: 20pt;
   font-weight: 200;
