@@ -338,22 +338,50 @@ body.restaurant-view {
 .reviews-list {
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1rem;
 }
 .reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   overflow: hidden;
-  padding: 1rem;
   position: relative;
   width: 100%;
+  border-top-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
-ul.reviews-list li + li {
-  margin-top: 20px;
+.reviews-list li div.from {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: #333;
 }
-.reviews-list li p {
-  margin: 0 0 10px;
+.reviews-list li div.from p {
+  color: white;
+}
+.reviews-list li div.review-data {
+  padding: 1rem;
+}
+.reviews-list li p.rating {
+  width: fit-content;
+  background-color: orange;
+  border-radius: 5px;
+  padding: 0.3rem 0.6rem;
+  margin-bottom: 0.6rem;
+  margin: 0;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1pt;
+}
+.reviews-list li p.comments {
+  margin: 1rem 0 0 0;
+}
+.reviews-list li p.person-name {
+  font-size: 1rem;
 }
 .restaurant-hours {
   width: 100%;
