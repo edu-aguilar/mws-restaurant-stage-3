@@ -45,7 +45,7 @@ self.addEventListener ('fetch', event => {
 
 });
 
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', event => {
 
   var cacheWhitelist = [CACHE_NAME];
 
