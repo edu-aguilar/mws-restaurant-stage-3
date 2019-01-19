@@ -368,7 +368,7 @@ body.restaurant-view {
 }
 .reviews-list li p.rating {
   width: fit-content;
-  background-color: orange;
+  background-color: var(--orange-700, #D43900);;
   border-radius: 5px;
   padding: 0.3rem 0.6rem;
   margin-bottom: 0.6rem;
