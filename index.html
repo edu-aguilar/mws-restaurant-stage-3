@@ -58,6 +58,15 @@
       </span>
     </footer>
 
+    <script>
+      if (navigator.serviceWorker) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js')
+            .then(() => { console.log("sw registered")} );
+        });
+      }
+    </script>
+
   </body>
 
 </html>
