@@ -142,6 +142,7 @@ section.map-wrapper {
   width: 100%;
   background-color: #ccc;
   transition: ease 0.3s;
+  grid-area: map;
 }
 
 section.map-wrapper #map {
@@ -178,7 +179,7 @@ section.map-wrapper #map {
   background-color: white;
   border: 1px solid #fff;
   font-family: Arial,sans-serif;
-  font-size: 11pt;
+  font-size: 9pt;
   height: 30px;
   letter-spacing: 0;
   padding: 0 5px;
@@ -240,50 +241,6 @@ section.map-wrapper #map {
   width: 80%;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-}
-
-@media screen and (min-width: 600px) {
-
-  :root {
-    --map-height: 360px;
-    --box-gutter: 2rem;
-  }
-
-  .restaurants {
-    padding: var(--box-gutter, 2rem);
-    grid-gap: var(--box-gutter, 2rem);
-  }
-  .restaurants-filtering {
-    padding: 1rem var(--box-gutter, 2rem);;
-  }
-  .restaurants-filtering .filters {
-    justify-content: flex-start;
-  }
-  .restaurants-filtering .filters > select {
-    width: 30%;
-  }
-  .restaurants-filtering .filters > select + select {
-    margin-left: 1rem;
-  }
-
-}
-
-@media screen and (min-width: 800px) {
-
-  :root {
-    --box-gutter: 3rem;
-  }
-
-  .restaurants {
-    padding: var(--box-gutter, 3rem);
-    grid-gap: var(--box-gutter, 3rem);
-  }
-  .restaurants-filtering {
-    padding: 1rem var(--box-gutter, 3rem);;
-  }
-  .restaurants-filtering .filters > select {
-    width: 20%;
-  }
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -352,22 +309,28 @@ body.restaurant-view {
   text-transform: uppercase;
 	width: 100%;
 }
-
-.restaurant-wrapper, #reviews-container {
+.restaurant-wrapper {
+  grid-area: hours;
+}
+.restaurant-wrapper, .reviews-wrapper {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 1rem;
   width: 100%;
 }
-#reviews-container {
+
+.reviews-wrapper {
   padding: 1rem;
+  grid-area: reviews;
 }
-#reviews-container h2 {
+.reviews-wrapper h1 {
   color: #f58500;
-  font-size: 24pt;
-  font-weight: 300;
-  letter-spacing: -1px;
-  padding-bottom: 1pt;
+  font-size: 20pt;
+  font-weight: 200;
+  letter-spacing: 0;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  line-height: 1.1;
 }
 .reviews-list {
   margin: 0;
@@ -394,4 +357,65 @@ ul.reviews-list li + li {
 }
 .restaurant-hours td {
   color: #666;
+}
+
+
+
+
+@media screen and (min-width: 500px) {
+
+  :root {
+    --map-height: 360px;
+    --box-gutter: 2rem;
+  }
+
+  .restaurants {
+    padding: var(--box-gutter, 2rem);
+    grid-gap: var(--box-gutter, 2rem);
+  }
+  .restaurants-filtering {
+    padding: 1rem var(--box-gutter, 2rem);;
+  }
+  .restaurants-filtering .filters {
+    justify-content: flex-start;
+  }
+  .restaurants-filtering .filters > select {
+    width: 30%;
+    font-size: 11pt;
+  }
+  .restaurants-filtering .filters > select + select {
+    margin-left: 1rem;
+  }
+
+  .restaurant-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+}
+
+@media screen and (min-width: 800px) {
+
+  :root {
+    --box-gutter: 3rem;
+  }
+
+  .restaurants {
+    padding: var(--box-gutter, 3rem);
+    grid-gap: var(--box-gutter, 3rem);
+  }
+  .restaurants-filtering {
+    padding: 1rem var(--box-gutter, 3rem);;
+  }
+  .restaurants-filtering .filters > select {
+    width: 20%;
+  }
+
+  .restaurant-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: --var(--map-height) 1fr;
+    grid-template-areas: "map map" "hours reviews";
+  }
+
 }
