@@ -18,10 +18,10 @@
 <body class="restaurant-view">
 
   <header role="banner">
-    <nav>
+    <nav role="navigation">
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
-    <ul id="breadcrumb">
+    <ul id="breadcrumb" role="navigation" aria-label="Breadcrumb">
       <li><a href="/">Home</a></li>
     </ul>
   </header>
@@ -29,7 +29,7 @@
   <main id="maincontent" class="restaurant-detail" role="main">
 
     <section class="map-wrapper" id="map-container">
-      <div id="map"></div>
+      <div id="map" role="application" aria-label="restaurant located in map"></div>
     </section>
 
     <section class="restaurant-wrapper" id="restaurant-container" aria-label="Restaurant info" role="region" tabindex="0">
