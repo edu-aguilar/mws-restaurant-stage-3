@@ -156,7 +156,7 @@ createRestaurantHTML = (restaurant) => {
   restaurantDataWrapper.className = 'restaurant-info-wrapper';
   li.append(restaurantDataWrapper);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   restaurantDataWrapper.append(name);
 

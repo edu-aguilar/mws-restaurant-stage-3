@@ -159,7 +159,7 @@ section.map-wrapper #map {
   padding: 0.5rem var(--box-gutter, 1rem);
 }
 
-.restaurants-filtering h2 {
+.restaurants-filtering span {
   color: white;
   font-size: 1rem;
   font-weight: normal;
@@ -217,7 +217,7 @@ section.map-wrapper #map {
   margin: 0;
   max-width: 100%;
 }
-.restaurants li h1 {
+.restaurants li h2 {
   color: var(--orange-700, #D43900);
   font-family: Arial,sans-serif;
   font-size: 14pt;
@@ -326,7 +326,7 @@ body.restaurant-view {
   padding: 1rem;
   grid-area: reviews;
 }
-.reviews-wrapper h1 {
+.reviews-wrapper h3 {
   color: var(--orange-700, #D43900);
   font-size: 20pt;
   font-weight: 200;
