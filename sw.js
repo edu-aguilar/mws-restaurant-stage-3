@@ -1,12 +1,23 @@
 const filesToCache = [
   '/',
   '/index.html',
+  '/restaurant.html',
   '/css/styles.css',
   '/data/restaurants.json',
   '/js/common.js',
   '/js/dbhelper.js',
   '/js/main.js',
-  '/js/restaurant_info.js'
+  '/js/restaurant_info.js',
+  '/img/small/1.jpg',
+  '/img/small/2.jpg',
+  '/img/small/3.jpg',
+  '/img/small/4.jpg',
+  '/img/small/5.jpg',
+  '/img/small/6.jpg',
+  '/img/small/7.jpg',
+  '/img/small/8.jpg',
+  '/img/small/9.jpg',
+  '/img/small/10.jpg'
 ];
 
 const CACHE_NAME = 'cache-v1';
