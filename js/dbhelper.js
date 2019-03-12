@@ -12,10 +12,17 @@ class DBHelper {
     return `http://localhost:${port}/data/restaurants.json`;
   }
 
+  static get APIURL() {
+    const baseURL = 'http://localhost';
+    const port = '1337';
+    return `${baseURL}:${port}/restaurants`;
+  }
+
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
+    
     let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
@@ -29,6 +36,16 @@ class DBHelper {
       }
     };
     xhr.send();
+  }
+
+  /**
+   * Fetch all restaurants from API REST
+   */
+  static newFetchRestaurants() {
+    //TODO add IndexedDB here to store data when fetched. After that, fetch from indexedDB before try to fetch the API.
+    return fetch(DBHelper.APIURL)
+      .then(res => res.json())
+      .then(formatedResponse => formatedResponse);
   }
 
   /**
@@ -106,37 +123,23 @@ class DBHelper {
   /**
    * Fetch all neighborhoods with proper error handling.
    */
-  static fetchNeighborhoods(callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Get all neighborhoods from all restaurants
+  static fetchNeighborhoods() {
+    return DBHelper.newFetchRestaurants()
+      .then(restaurants => {
         const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
-        // Remove duplicates from neighborhoods
-        const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
-        callback(null, uniqueNeighborhoods);
-      }
-    });
+        return neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
+      });
   }
 
   /**
    * Fetch all cuisines with proper error handling.
    */
-  static fetchCuisines(callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Get all cuisines from all restaurants
+  static fetchCuisines() {
+    return DBHelper.newFetchRestaurants()
+      .then(restaurants => {
         const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
-        // Remove duplicates from cuisines
-        const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-        callback(null, uniqueCuisines);
-      }
-    });
+        return cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+      });
   }
 
   /**
