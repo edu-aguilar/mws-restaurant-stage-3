@@ -3,7 +3,6 @@ const filesToCache = [
   '/index.html',
   '/restaurant.html',
   '/css/styles.css',
-  '/data/restaurants.json',
   '/js/common.js',
   '/js/dbhelper.js',
   '/js/main.js',

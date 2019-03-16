@@ -4,14 +4,8 @@
 class DBHelper {
 
   /**
-   * Database URL.
-   * Change this to restaurants.json file location on your server.
+   * API REST URL.
    */
-  static get DATABASE_URL() {
-    const port = 8080 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
-  }
-
   static get APIURL() {
     const baseURL = 'http://localhost';
     const port = '1337';
