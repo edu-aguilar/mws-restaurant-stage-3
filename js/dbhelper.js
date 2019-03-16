@@ -19,29 +19,9 @@ class DBHelper {
   }
 
   /**
-   * Fetch all restaurants.
-   */
-  static fetchRestaurants(callback) {
-    
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
-    xhr.onload = () => {
-      if (xhr.status === 200) { // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
-        callback(null, restaurants);
-      } else { // Oops!. Got an error from server.
-        const error = (`Request failed. Returned status of ${xhr.status}`);
-        callback(error, null);
-      }
-    };
-    xhr.send();
-  }
-
-  /**
    * Fetch all restaurants from API REST
    */
-  static newFetchRestaurants() {
+  static fetchRestaurants() {
     //TODO add IndexedDB here to store data when fetched. After that, fetch from indexedDB before try to fetch the API.
     return fetch(DBHelper.APIURL)
       .then(res => res.json())
@@ -53,7 +33,7 @@ class DBHelper {
    */
   static fetchRestaurantById(id) {
     return new Promise((resolve, reject) => {
-      DBHelper.newFetchRestaurants()
+      DBHelper.fetchRestaurants()
       .then(restaurants => {
         const restaurant = restaurants.find(restaurant => restaurant.id == id);
         if (restaurant) {
@@ -66,44 +46,12 @@ class DBHelper {
   }
 
   /**
-   * Fetch restaurants by a cuisine type with proper error handling.
-   */
-  static fetchRestaurantByCuisine(cuisine, callback) {
-    // Fetch all restaurants  with proper error handling
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Filter restaurants to have only given cuisine type
-        const results = restaurants.filter(r => r.cuisine_type == cuisine);
-        callback(null, results);
-      }
-    });
-  }
-
-  /**
-   * Fetch restaurants by a neighborhood with proper error handling.
-   */
-  static fetchRestaurantByNeighborhood(neighborhood, callback) {
-    // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Filter restaurants to have only given neighborhood
-        const results = restaurants.filter(r => r.neighborhood == neighborhood);
-        callback(null, results);
-      }
-    });
-  }
-
-  /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
-    return DBHelper.newFetchRestaurants()
+    return DBHelper.fetchRestaurants()
       .then(restaurants => {
-        let results = restaurants
+        let results = restaurants;
         if (cuisine != 'all') {
           results = results.filter(r => r.cuisine_type == cuisine);
         }
@@ -118,7 +66,7 @@ class DBHelper {
    * Fetch all neighborhoods with proper error handling.
    */
   static fetchNeighborhoods() {
-    return DBHelper.newFetchRestaurants()
+    return DBHelper.fetchRestaurants()
       .then(restaurants => {
         const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
         return neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
@@ -129,7 +77,7 @@ class DBHelper {
    * Fetch all cuisines with proper error handling.
    */
   static fetchCuisines() {
-    return DBHelper.newFetchRestaurants()
+    return DBHelper.fetchRestaurants()
       .then(restaurants => {
         const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
         return cuisines.filter((v, i) => cuisines.indexOf(v) == i)
