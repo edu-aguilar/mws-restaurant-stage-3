@@ -26,17 +26,11 @@ class DBHelper {
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id) {
-    return new Promise((resolve, reject) => {
-      DBHelper.fetchRestaurants()
-      .then(restaurants => {
-        const restaurant = restaurants.find(restaurant => restaurant.id == id);
-        if (restaurant) {
-          resolve(restaurant);
-        } else {
-          reject('Restaurant does not exist');
-        }
-      });
-    });
+    //TODO add IndexedDB here to store data when fetched. After that, fetch from indexedDB before try to fetch the API.
+    const endpoint = `${DBHelper.APIURL}/${id}`;
+    return fetch(endpoint)
+      .then(res => res.json())
+      .then(formatedResponse => formatedResponse);
   }
 
   /**
