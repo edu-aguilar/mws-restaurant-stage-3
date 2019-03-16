@@ -98,7 +98,6 @@
 
     DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
       .then((restaurants = _restaurants) => {
-        debugger;
         resetRestaurants(restaurants);
         fillRestaurantsHTML(restaurants);
         addMarkersToMap(restaurants);
