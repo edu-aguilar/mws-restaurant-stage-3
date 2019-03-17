@@ -1,0 +1,22 @@
+{
+  "name": "mws-restaurant-stage-2",
+  "version": "1.0.0",
+  "description": "--- #### _Three Stage Course Material Project - Restaurant Reviews_",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edu-aguilar/mws-restaurant-stage-2.git"
+  },
+  "author": "Eduardo Aguilar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edu-aguilar/mws-restaurant-stage-2/issues"
+  },
+  "homepage": "https://github.com/edu-aguilar/mws-restaurant-stage-2#readme",
+  "dependencies": {
+    "idb": "^4.0.0"
+  }
+}
