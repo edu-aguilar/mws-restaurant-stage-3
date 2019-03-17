@@ -7,7 +7,7 @@
   /**
    * Fetch neighborhoods and cuisines as soon as the page is loaded.
    */
-  this.addEventListener('DOMContentLoaded', (event) => {
+  document.addEventListener('DOMContentLoaded', (event) => {
     initMap();
     fetchNeighborhoods();
     fetchCuisines();
