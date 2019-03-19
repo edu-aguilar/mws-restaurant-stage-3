@@ -83,7 +83,8 @@ gulp.task('images', () => {
   return gulp
     .src([directories.images, `${directories.dependencies.leaflet}images/marker-*.*`])
     .pipe(imageMin([
-      pngquant({ quality: [0.5, 0.5] }),
+      imageMin.jpegtran({progressive: true}),
+      pngquant({ quality: [0.5, 0.5] })
     ], { progressive: true, verbose: true }))
     .pipe(gulp.dest(directories.output + 'img'));
 });
