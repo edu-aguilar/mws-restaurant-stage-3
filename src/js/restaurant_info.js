@@ -1,3 +1,7 @@
+import header from './header';
+import DBHelper from './dbhelper';
+import L from 'leaflet';
+
 (function(){
 
 var _restaurant;
@@ -7,6 +11,7 @@ var _newMap;
  * Initialize map as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {  
+  header.setBehavior();
   fetchRestaurantFromURL()
     .then((restaurant = _restaurant) => {
       _restaurant = restaurant;

@@ -1,7 +1,3 @@
-window.addEventListener('load', (event) => {
-  setHeaderBehavior();
-  hideMapLibraryLinks();
-});
 
 const setHeaderBehavior = () => {
   let prevScrollpos = window.pageYOffset;
@@ -19,7 +15,6 @@ const setHeaderBehavior = () => {
   }
 }
 
-const hideMapLibraryLinks = () => {
-  let mapLinks = document.querySelectorAll('div.leaflet-bottom.leaflet-right');
-  mapLinks.forEach(map => map.style.visibility = 'hidden');
+module.exports = {
+  setBehavior: setHeaderBehavior
 }

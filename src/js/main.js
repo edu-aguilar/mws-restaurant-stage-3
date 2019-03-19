@@ -1,3 +1,7 @@
+import header from './header';
+import DBHelper from './dbhelper';
+import L from 'leaflet';
+
 (function () {
 
   var _restaurants = [];
@@ -8,6 +12,7 @@
    * Fetch neighborhoods and cuisines as soon as the page is loaded.
    */
   document.addEventListener('DOMContentLoaded', (event) => {
+    header.setBehavior();
     initMap();
     fetchNeighborhoods();
     fetchCuisines();
