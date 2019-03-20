@@ -31,11 +31,8 @@ import L from 'leaflet';
     * Setting filters when offline
     */
   const setFilters = (restaurants) => {
-    const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
-    fillNeighborhoodsHTML(neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i));
-
-    const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
-    fillCuisinesHTML(cuisines.filter((v, i) => cuisines.indexOf(v) == i));
+    fillNeighborhoodsHTML(DBHelper.getNeighborhoods(restaurants));
+    fillCuisinesHTML(DBHelper.getCuisines(restaurants));
   }
 
   /**
@@ -122,7 +119,7 @@ import L from 'leaflet';
 
     const cuisine = cSelect[cIndex].value;
     const neighborhood = nSelect[nIndex].value;
-
+    
     DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
       .then((restaurants = _restaurants) => {
         resetRestaurants(restaurants);

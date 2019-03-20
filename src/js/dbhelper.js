@@ -86,26 +86,30 @@ export default class DBHelper {
       });
   }
 
+  static getNeighborhoods(restaurants) {
+    const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
+    return neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
+  }
+
+  static getCuisines(restaurants) {
+    const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
+    return cuisines.filter((v, i) => cuisines.indexOf(v) == i)
+  }
+
   /**
    * Fetch all neighborhoods with proper error handling.
    */
   static fetchNeighborhoods() {
     return DBHelper.fetchRestaurants()
-      .then(restaurants => {
-        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
-        return neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
-      });
+      .then(restaurants => DBHelper.getNeighborhoods.call(this, restaurants));
   }
-
+  
   /**
    * Fetch all cuisines with proper error handling.
    */
   static fetchCuisines() {
     return DBHelper.fetchRestaurants()
-      .then(restaurants => {
-        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
-        return cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-      });
+      .then(restaurants => DBHelper.getCuisines.call(this, restaurants));
   }
 
   /**
