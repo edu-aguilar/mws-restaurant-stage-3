@@ -1,6 +1,9 @@
+import { openDB } from 'idb';
+
 /**
  * Common database helper functions.
  */
+
 export default class DBHelper {
 
   /**
@@ -12,6 +15,37 @@ export default class DBHelper {
     return `${baseURL}:${port}/restaurants`;
   }
 
+  static openDatabase() {
+    if (!navigator.serviceWorker) {
+      return Promise.resolve();
+    }
+
+    return openDB('restaurantsDB', 1, {
+      upgrade(db) {
+        db.createObjectStore('restaurants', {
+          keyPath: 'id',
+        });
+      }
+    });
+
+  }
+
+  static cacheRestaurants(restaurants) {
+
+    this.openDatabase().then(db => {
+      if (!db) return;
+      const tx = db.transaction('restaurants', 'readwrite');
+      restaurants.forEach(restaurant => tx.store.add(restaurant));
+    });
+  }
+
+  static getCachedRestaurants() {
+    return this.openDatabase().then(db => {
+      if (!db) return;
+      return db.getAll('restaurants');
+    });
+  }
+
   /**
    * Fetch all restaurants from API REST
    */
@@ -19,14 +53,16 @@ export default class DBHelper {
     //TODO add IndexedDB here to store data when fetched. After that, fetch from indexedDB before try to fetch the API.
     return fetch(DBHelper.APIURL)
       .then(res => res.json())
-      .then(formatedResponse => formatedResponse);
+      .then(formatedResponse => {
+        this.cacheRestaurants(formatedResponse);
+        return formatedResponse;
+      });
   }
 
   /**
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id) {
-    //TODO add IndexedDB here to store data when fetched. After that, fetch from indexedDB before try to fetch the API.
     const endpoint = `${DBHelper.APIURL}/${id}`;
     return fetch(endpoint)
       .then(res => res.json())

@@ -3,7 +3,6 @@ import DBHelper from './dbhelper';
 import L from 'leaflet';
 
 (function () {
-
   var _restaurants = [];
   var _newMap;
   var _markers = [];
@@ -13,29 +12,68 @@ import L from 'leaflet';
    */
   document.addEventListener('DOMContentLoaded', (event) => {
     header.setBehavior();
+    DBHelper.getCachedRestaurants()
+      .then(restaurants => {
+        resetRestaurants(restaurants);
+        fillRestaurantsHTML(restaurants);
+        setFilters(restaurants);
+      })
+      .finally(() => {
+        fetchNeighborhoods();
+        fetchCuisines();
+        updateRestaurants();
+      });
+
     initMap();
-    fetchNeighborhoods();
-    fetchCuisines();
   });
+
+  /**
+    * Setting filters when offline
+    */
+  const setFilters = (restaurants) => {
+    const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
+    fillNeighborhoodsHTML(neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i));
+
+    const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
+    fillCuisinesHTML(cuisines.filter((v, i) => cuisines.indexOf(v) == i));
+  }
+
+  /**
+    * Set neighborhoods HTML.
+    */
+  const fillNeighborhoodsHTML = (neighborhoods) => {
+    const select = document.getElementById('neighborhoods-select');
+    while (select.hasChildNodes() && select.childNodes.length > 2) {   
+      select.removeChild(select.lastChild);
+    }
+    neighborhoods.forEach(neighborhood => {
+      const option = document.createElement('option');
+      option.innerHTML = neighborhood;
+      option.value = neighborhood;
+      select.append(option);
+    });
+  }
+
+  /**
+     * Set cuisines HTML.
+     */
+  const fillCuisinesHTML = (cuisines) => {
+    const select = document.getElementById('cuisines-select');
+    while (select.hasChildNodes() && select.childNodes.length > 2) {   
+      select.removeChild(select.lastChild);
+    }
+    cuisines.forEach(cuisine => {
+      const option = document.createElement('option');
+      option.innerHTML = cuisine;
+      option.value = cuisine;
+      select.append(option);
+    });
+  }
 
   /**
    * Fetch all neighborhoods and set their HTML.
    */
   const fetchNeighborhoods = () => {
-
-    /**
-    * Set neighborhoods HTML.
-    */
-    const fillNeighborhoodsHTML = (neighborhoods) => {
-      const select = document.getElementById('neighborhoods-select');
-      neighborhoods.forEach(neighborhood => {
-        const option = document.createElement('option');
-        option.innerHTML = neighborhood;
-        option.value = neighborhood;
-        select.append(option);
-      });
-    }
-
     DBHelper.fetchNeighborhoods()
       .then(fillNeighborhoodsHTML)
       .catch((error) => { console.log(error) });
@@ -45,21 +83,6 @@ import L from 'leaflet';
    * Fetch all cuisines and set their HTML.
    */
   const fetchCuisines = () => {
-
-    /**
-     * Set cuisines HTML.
-     */
-    const fillCuisinesHTML = (cuisines) => {
-      const select = document.getElementById('cuisines-select');
-
-      cuisines.forEach(cuisine => {
-        const option = document.createElement('option');
-        option.innerHTML = cuisine;
-        option.value = cuisine;
-        select.append(option);
-      });
-    }
-
     DBHelper.fetchCuisines()
       .then(fillCuisinesHTML)
       .catch((error) => { console.log(error) });
@@ -84,7 +107,6 @@ import L from 'leaflet';
       id: 'mapbox.streets'
     }).addTo(_newMap);
 
-    updateRestaurants();
   }
 
   /**
