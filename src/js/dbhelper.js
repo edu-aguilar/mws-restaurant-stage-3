@@ -69,21 +69,22 @@ export default class DBHelper {
       .then(formatedResponse => formatedResponse);
   }
 
+  static filterRestaurantByCuisineAndNeighborhood(restaurants, cuisine, neighborhood) {
+    let results = restaurants;
+    if (cuisine != 'all') {
+      results = results.filter(r => r.cuisine_type == cuisine);
+    }
+    if (neighborhood != 'all') {
+      results = results.filter(r => r.neighborhood == neighborhood);
+    }
+    return results;
+  }
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
     return DBHelper.fetchRestaurants()
-      .then(restaurants => {
-        let results = restaurants;
-        if (cuisine != 'all') {
-          results = results.filter(r => r.cuisine_type == cuisine);
-        }
-        if (neighborhood != 'all') {
-          results = results.filter(r => r.neighborhood == neighborhood);
-        }
-        return results;
-      });
+      .then(restaurants => DBHelper.filterRestaurantByCuisineAndNeighborhood.call(this, restaurants, cuisine, neighborhood));
   }
 
   static getNeighborhoods(restaurants) {
@@ -103,7 +104,7 @@ export default class DBHelper {
     return DBHelper.fetchRestaurants()
       .then(restaurants => DBHelper.getNeighborhoods.call(this, restaurants));
   }
-  
+
   /**
    * Fetch all cuisines with proper error handling.
    */

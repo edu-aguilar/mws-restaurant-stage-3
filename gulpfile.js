@@ -22,7 +22,7 @@ const directories = {
   }
 };
 
-gulp.task('default', ['html', 'styles', 'js', 'images', 'sw'], () => {
+gulp.task('default', ['html', 'styles', 'js', 'images', 'pwa'], () => {
   connect.server({
     root: 'dist',
     livereload: true,
@@ -89,8 +89,8 @@ gulp.task('images', () => {
     .pipe(gulp.dest(directories.output + 'img'));
 });
 
-gulp.task('sw', () => {
+gulp.task('pwa', () => {
   return gulp
-    .src(['./sw.js'])
+    .src(['./sw.js', './manifest.json'])
     .pipe(gulp.dest(directories.output));
 });

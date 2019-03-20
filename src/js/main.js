@@ -40,7 +40,7 @@ import L from 'leaflet';
     */
   const fillNeighborhoodsHTML = (neighborhoods) => {
     const select = document.getElementById('neighborhoods-select');
-    while (select.hasChildNodes() && select.childNodes.length > 2) {   
+    while (select.hasChildNodes() && select.childNodes.length > 2) {
       select.removeChild(select.lastChild);
     }
     neighborhoods.forEach(neighborhood => {
@@ -56,7 +56,7 @@ import L from 'leaflet';
      */
   const fillCuisinesHTML = (cuisines) => {
     const select = document.getElementById('cuisines-select');
-    while (select.hasChildNodes() && select.childNodes.length > 2) {   
+    while (select.hasChildNodes() && select.childNodes.length > 2) {
       select.removeChild(select.lastChild);
     }
     cuisines.forEach(cuisine => {
@@ -119,14 +119,23 @@ import L from 'leaflet';
 
     const cuisine = cSelect[cIndex].value;
     const neighborhood = nSelect[nIndex].value;
-    
-    DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
-      .then((restaurants = _restaurants) => {
-        resetRestaurants(restaurants);
-        fillRestaurantsHTML(restaurants);
-        addMarkersToMap(restaurants);
+
+    DBHelper.getCachedRestaurants()
+      .then(restaurants => {
+        let results = DBHelper.filterRestaurantByCuisineAndNeighborhood(restaurants, cuisine, neighborhood);
+        resetRestaurants(results);
+        fillRestaurantsHTML(results);
+        addMarkersToMap(results);
       })
-      .catch((error) => { console.log(error) });
+      .finally(() => {
+        DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
+          .then((restaurants = _restaurants) => {
+            resetRestaurants(restaurants);
+            fillRestaurantsHTML(restaurants);
+            addMarkersToMap(restaurants);
+          })
+          .catch((error) => { console.log(error) });
+      });
   }
 
   /**
