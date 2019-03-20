@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const autoprefixer = require('gulp-autoprefixer');
 const connect = require('gulp-connect');
 const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
+const uglifyify = require('uglifyify');
 const imageMin = require('gulp-imagemin');
 const pngquant = require('imagemin-pngquant');
 const babelify = require('babelify');
@@ -67,11 +67,11 @@ gulp.task('js', () => {
       .transform(babelify.configure({
         presets: ["@babel/preset-env"]
       }))
+      .transform({ global: true }, uglifyify)
       .bundle()
       .pipe(source(entry.buildName))
       .pipe(buffer())
       .pipe(sourcemaps.init())
-      //.pipe(uglify())
       .pipe(sourcemaps.write('./maps'))
       .pipe(gulp.dest("./dist/js"));
   }
