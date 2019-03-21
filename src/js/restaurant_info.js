@@ -6,11 +6,14 @@ import L from 'leaflet';
 
 var _restaurant;
 var _newMap;
+var dbHelper;
 
 /**
  * Initialize map as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {  
+  dbHelper = new DBHelper();
+  
   header.setBehavior();
   fetchRestaurantFromURL()
     .then((restaurant = _restaurant) => {
@@ -36,7 +39,7 @@ const fetchRestaurantFromURL = () => {
     if (!id) { // no id found in URL
       reject('No restaurant id in URL');
     } else {
-      DBHelper.fetchRestaurantById(id)
+      dbHelper.fetchRestaurantById(id)
         .then((restaurant) => {
           resolve(restaurant);
         })

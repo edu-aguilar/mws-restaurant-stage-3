@@ -55,8 +55,8 @@ class DBHelper {
           } else {
             resolve(this.fetchRestaurantsFromAPI())
           }
-        });
-      })
+        }).catch(reject);
+      }).catch(reject);
     });
   }
 
@@ -72,13 +72,32 @@ class DBHelper {
       })
   }
 
+  fetchRestaurantsByIdFromAPI(id) {
+    return fetch(`${DBHelper.APIURL}/${id}`)
+      .then(response => response.json())
+      .then(restaurant => {
+        this.cacheRestaurants([restaurant]);
+        return restaurant;
+      })
+  }
+
   /**
    * Fetch a restaurant by its ID.
    */
-  static fetchRestaurantById(id) {
-    const endpoint = `${DBHelper.APIURL}/${id}`;
-    return fetch(endpoint)
-      .then(res => res.json());
+  fetchRestaurantById(id) {
+    return new Promise((resolve, reject) => {
+      this._dbPromise.then(db => {
+        db.get('restaurants', parseInt(id))
+          .then(restaurant => {
+            if (restaurant) {
+              resolve(restaurant);
+            } else {
+              resolve(this.fetchRestaurantsByIdFromAPI(id));
+            }
+          })
+          .catch(reject);
+      });
+    });
   }
 
   static filterRestaurantByCuisineAndNeighborhood(restaurants, cuisine, neighborhood) {
