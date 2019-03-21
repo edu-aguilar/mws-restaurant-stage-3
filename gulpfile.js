@@ -10,6 +10,7 @@ const browserify = require("browserify");
 const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
 const sourcemaps = require("gulp-sourcemaps");
+let cleanCSS = require('gulp-clean-css');
 
 const directories = {
   css: './src/css/**/*.css',
@@ -45,6 +46,7 @@ gulp.task('styles', () => {
     .src([`${directories.dependencies.leaflet}leaflet.css`, directories.css])
     .pipe(autoprefixer({ browsers: ['last 4 versions'] }))
     .pipe(concat('styles.css'))
+    .pipe(cleanCSS())
     .pipe(gulp.dest(directories.output + 'css'))
     .pipe(connect.reload());
 });

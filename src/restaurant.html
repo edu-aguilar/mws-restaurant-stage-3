@@ -7,6 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Retaurant detail">
 
+  <link rel="icon" href="./img/app-image/favicon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3f51b5">
+
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <link rel="stylesheet" href="./css/styles.css" type="text/css">
   <title>Restaurant Detail</title>
@@ -30,7 +34,8 @@
       <div id="map" role="application" aria-label="restaurant located in map"></div>
     </section>
 
-    <section class="restaurant-wrapper" id="restaurant-container" aria-label="Restaurant info" role="region" tabindex="0">
+    <section class="restaurant-wrapper" id="restaurant-container" aria-label="Restaurant info" role="region"
+      tabindex="0">
       <h2 class="restaurant-name" id="restaurant-name"></h2>
       <img id="restaurant-img">
       <p id="restaurant-cuisine" class="restaurant-cuisine"></p>
@@ -46,13 +51,21 @@
 
   <footer id="footer" role="contentinfo">
     <span>
-        Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+      Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
     </span>
 
   </footer>
 
   <script type="text/javascript" src="js/restaurant_info.min.js"></script>
 
+  <script>
+    if (navigator.serviceWorker) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => { console.log("sw registered")} );
+      });
+    }
+  </script>
 
 </body>
 
