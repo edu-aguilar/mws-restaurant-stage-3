@@ -69,7 +69,7 @@ gulp.task('js', () => {
       .transform(babelify.configure({
         presets: ["@babel/preset-env"]
       }))
-      //.transform({ global: true }, uglifyify)
+      .transform({ global: true }, uglifyify)
       .bundle()
       .pipe(source(entry.buildName))
       .pipe(buffer())
