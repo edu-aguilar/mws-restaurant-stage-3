@@ -6,43 +6,26 @@ import L from 'leaflet';
   var _restaurants = [];
   var _newMap;
   var _markers = [];
+  var dbHelper;
 
   /**
    * Fetch neighborhoods and cuisines as soon as the page is loaded.
    */
   document.addEventListener('DOMContentLoaded', (event) => {
     header.setBehavior();
-    DBHelper.getCachedRestaurants()
-      .then(restaurants => {
-        resetRestaurants(restaurants);
-        fillRestaurantsHTML(restaurants);
-        setFilters(restaurants);
-      })
-      .finally(() => {
-        fetchNeighborhoods();
-        fetchCuisines();
-        updateRestaurants();
-      });
-
+    dbHelper = new DBHelper();
+    
     initMap();
+    fetchNeighborhoods();
+    fetchCuisines();
+    updateRestaurants();
   });
-
-  /**
-    * Setting filters when offline
-    */
-  const setFilters = (restaurants) => {
-    fillNeighborhoodsHTML(DBHelper.getNeighborhoods(restaurants));
-    fillCuisinesHTML(DBHelper.getCuisines(restaurants));
-  }
 
   /**
     * Set neighborhoods HTML.
     */
   const fillNeighborhoodsHTML = (neighborhoods) => {
     const select = document.getElementById('neighborhoods-select');
-    while (select.hasChildNodes() && select.childNodes.length > 2) {
-      select.removeChild(select.lastChild);
-    }
     neighborhoods.forEach(neighborhood => {
       const option = document.createElement('option');
       option.innerHTML = neighborhood;
@@ -56,9 +39,6 @@ import L from 'leaflet';
      */
   const fillCuisinesHTML = (cuisines) => {
     const select = document.getElementById('cuisines-select');
-    while (select.hasChildNodes() && select.childNodes.length > 2) {
-      select.removeChild(select.lastChild);
-    }
     cuisines.forEach(cuisine => {
       const option = document.createElement('option');
       option.innerHTML = cuisine;
@@ -71,7 +51,7 @@ import L from 'leaflet';
    * Fetch all neighborhoods and set their HTML.
    */
   const fetchNeighborhoods = () => {
-    DBHelper.fetchNeighborhoods()
+    dbHelper.fetchNeighborhoods()
       .then(fillNeighborhoodsHTML)
       .catch((error) => { console.log(error) });
   }
@@ -80,7 +60,7 @@ import L from 'leaflet';
    * Fetch all cuisines and set their HTML.
    */
   const fetchCuisines = () => {
-    DBHelper.fetchCuisines()
+    dbHelper.fetchCuisines()
       .then(fillCuisinesHTML)
       .catch((error) => { console.log(error) });
   }
@@ -120,22 +100,14 @@ import L from 'leaflet';
     const cuisine = cSelect[cIndex].value;
     const neighborhood = nSelect[nIndex].value;
 
-    DBHelper.getCachedRestaurants()
-      .then(restaurants => {
-        let results = DBHelper.filterRestaurantByCuisineAndNeighborhood(restaurants, cuisine, neighborhood);
-        resetRestaurants(results);
-        fillRestaurantsHTML(results);
-        addMarkersToMap(results);
-      })
-      .finally(() => {
-        DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
-          .then((restaurants = _restaurants) => {
-            resetRestaurants(restaurants);
-            fillRestaurantsHTML(restaurants);
-            addMarkersToMap(restaurants);
-          })
-          .catch((error) => { console.log(error) });
-      });
+    dbHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood)
+    .then((restaurants = _restaurants) => {
+      resetRestaurants(restaurants);
+      fillRestaurantsHTML(restaurants);
+      addMarkersToMap(restaurants);
+    })
+    .catch((error) => { console.log(error) });
+
   }
 
   /**

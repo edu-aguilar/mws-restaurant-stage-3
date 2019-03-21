@@ -4,8 +4,11 @@ import { openDB } from 'idb';
  * Common database helper functions.
  */
 
-export default class DBHelper {
+class DBHelper {
 
+  constructor() {
+    this._dbPromise = DBHelper.openDatabase();
+  }
   /**
    * API REST URL.
    */
@@ -30,33 +33,43 @@ export default class DBHelper {
 
   }
 
-  static cacheRestaurants(restaurants) {
+  cacheRestaurants(restaurants) {
 
-    this.openDatabase().then(db => {
+    this._dbPromise.then(db => {
       if (!db) return;
       const tx = db.transaction('restaurants', 'readwrite');
-      restaurants.forEach(restaurant => tx.store.add(restaurant));
-    });
-  }
-
-  static getCachedRestaurants() {
-    return this.openDatabase().then(db => {
-      if (!db) return;
-      return db.getAll('restaurants');
+      restaurants.forEach(restaurant => tx.store.put(restaurant));
     });
   }
 
   /**
-   * Fetch all restaurants from API REST
+   * Fetch all restaurants from IDB if there are results, else go to network.
    */
-  static fetchRestaurants() {
-    //TODO add IndexedDB here to store data when fetched. After that, fetch from indexedDB before try to fetch the API.
+  fetchRestaurants() {
+
+    return new Promise((resolve, reject) => {
+      this._dbPromise.then(db => {
+        db.count('restaurants').then(number => {
+          if (number > 0) {
+            resolve(db.getAll('restaurants'));
+          } else {
+            resolve(this.fetchRestaurantsFromAPI())
+          }
+        });
+      })
+    });
+  }
+
+  /**
+ * Fetch all restaurants from API REST
+ */
+  fetchRestaurantsFromAPI() {
     return fetch(DBHelper.APIURL)
-      .then(res => res.json())
-      .then(formatedResponse => {
-        this.cacheRestaurants(formatedResponse);
-        return formatedResponse;
-      });
+      .then(response => response.json())
+      .then(restaurants => {
+        this.cacheRestaurants(restaurants);
+        return restaurants;
+      })
   }
 
   /**
@@ -65,8 +78,7 @@ export default class DBHelper {
   static fetchRestaurantById(id) {
     const endpoint = `${DBHelper.APIURL}/${id}`;
     return fetch(endpoint)
-      .then(res => res.json())
-      .then(formatedResponse => formatedResponse);
+      .then(res => res.json());
   }
 
   static filterRestaurantByCuisineAndNeighborhood(restaurants, cuisine, neighborhood) {
@@ -82,8 +94,8 @@ export default class DBHelper {
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
-  static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
-    return DBHelper.fetchRestaurants()
+  fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
+    return this.fetchRestaurants()
       .then(restaurants => DBHelper.filterRestaurantByCuisineAndNeighborhood.call(this, restaurants, cuisine, neighborhood));
   }
 
@@ -100,16 +112,16 @@ export default class DBHelper {
   /**
    * Fetch all neighborhoods with proper error handling.
    */
-  static fetchNeighborhoods() {
-    return DBHelper.fetchRestaurants()
+  fetchNeighborhoods() {
+    return this.fetchRestaurants()
       .then(restaurants => DBHelper.getNeighborhoods.call(this, restaurants));
   }
 
   /**
    * Fetch all cuisines with proper error handling.
    */
-  static fetchCuisines() {
-    return DBHelper.fetchRestaurants()
+  fetchCuisines() {
+    return this.fetchRestaurants()
       .then(restaurants => DBHelper.getCuisines.call(this, restaurants));
   }
 
@@ -146,3 +158,5 @@ export default class DBHelper {
     return marker;
   }
 }
+
+export default DBHelper;
