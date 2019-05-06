@@ -32,6 +32,9 @@ class DBHelper {
         db.createObjectStore('restaurants', {
           keyPath: 'id',
         });
+        db.createObjectStore('reviews', {
+          keyPath: 'id',
+        }).createIndex('restaurant_id', 'restaurant_id', {unique: false});
       }
     });
 
@@ -43,6 +46,14 @@ class DBHelper {
       if (!db) return;
       const tx = db.transaction('restaurants', 'readwrite');
       restaurants.forEach(restaurant => tx.store.put(restaurant));
+    });
+  }
+
+  cacheReviews(id, reviews) {
+    this._dbPromise.then(db => {
+      if (!db) return;
+      const tx = db.transaction('reviews', 'readwrite');
+      reviews.forEach(review => tx.store.put(review));
     });
   }
 
@@ -181,13 +192,37 @@ class DBHelper {
     return marker;
   }
 
-  fetchReviewsByRestaurantId(restaurantId) {
+
+  /**
+   * Fetch all reviews available of given restaurant from API
+   */
+  fetchReviewsByRestaurantIdFromAPI(restaurantId) {
     return fetch(`${DBHelper.APIURL('reviews')}/?restaurant_id=${restaurantId}`)
       .then(response => response.json())
       .then(reviews => {
-        //this.cacheReviews(restaurantId, reviews);
+        this.cacheReviews(restaurantId, reviews);
         return reviews;
       })
+  }
+
+  /**
+   * Fetch all reviews available of given restaurant
+   */
+  fetchReviewsByRestaurantId(restaurantId) {
+
+    return new Promise((resolve, reject) => {
+      this._dbPromise.then(db => {
+        db.transaction('reviews').objectStore('reviews')
+          .index('restaurant_id').getAll(restaurantId).then((reviews) => {
+          if (reviews.length > 0) {
+            resolve(reviews);
+          } else {
+            //fetch from API && cache results.
+            resolve(this.fetchReviewsByRestaurantIdFromAPI(restaurantId));
+          }
+        })
+      }).catch(reject);
+    });
   }
 }
 
