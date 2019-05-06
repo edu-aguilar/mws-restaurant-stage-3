@@ -13,13 +13,14 @@ const filesToCache = [
   '/img/small/8.jpg',
   '/img/small/9.jpg',
   '/img/small/10.jpg',
+  '/img/small/default-restaurant.jpg',
   '/img/marker-icon.png',
   '/img/marker-shadow.png',
   '/js/main.min.js',
   '/js/restaurant_info.min.js',
 ];
 
-const CACHE_NAME = 'cache-v1';
+const CACHE_NAME = 'cache-v2';
 
 self.addEventListener('install', event => {
   event.waitUntil(
