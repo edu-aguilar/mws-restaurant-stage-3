@@ -12,10 +12,14 @@ class DBHelper {
   /**
    * API REST URL.
    */
-  static get APIURL() {
+  static APIURL(collection = 'restaurants') {
     const baseURL = 'http://localhost';
     const port = '1337';
-    return `${baseURL}:${port}/restaurants`;
+    const endpoints = {
+      restaurants: '/restaurants',
+      reviews: '/reviews'
+    }
+    return `${baseURL}:${port}${endpoints[collection]}`;
   }
 
   static openDatabase() {
@@ -64,7 +68,7 @@ class DBHelper {
  * Fetch all restaurants from API REST
  */
   fetchRestaurantsFromAPI() {
-    return fetch(DBHelper.APIURL)
+    return fetch(DBHelper.APIURL())
       .then(response => response.json())
       .then(restaurants => {
         this.cacheRestaurants(restaurants);
@@ -73,7 +77,7 @@ class DBHelper {
   }
 
   fetchRestaurantsByIdFromAPI(id) {
-    return fetch(`${DBHelper.APIURL}/${id}`)
+    return fetch(`${DBHelper.APIURL()}/${id}`)
       .then(response => response.json())
       .then(restaurant => {
         this.cacheRestaurants([restaurant]);
@@ -175,6 +179,15 @@ class DBHelper {
       })
     marker.addTo(map);
     return marker;
+  }
+
+  fetchReviewsByRestaurantId(restaurantId) {
+    return fetch(`${DBHelper.APIURL('reviews')}/?restaurant_id=${restaurantId}`)
+      .then(response => response.json())
+      .then(reviews => {
+        //this.cacheReviews(restaurantId, reviews);
+        return reviews;
+      })
   }
 }
 

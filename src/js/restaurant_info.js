@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
       initMap(restaurant, _newMap);
       fillRestaurantHTML(restaurant);
       fillBreadcrumb(restaurant);
+      fetchRestaurantReviews(restaurant.id).then((reviews) => {
+        fillReviewsHTML(reviews);
+      });
     })
     .catch(error => {console.log(error);});
 });
@@ -46,6 +49,16 @@ const fetchRestaurantFromURL = () => {
         .catch(error => {reject(error);})
     }
 
+  });
+}
+
+const fetchRestaurantReviews = (restaurantId) => {
+  return new Promise((resolve, reject) => {
+    dbHelper.fetchReviewsByRestaurantId(restaurantId)
+    .then((reviews) => {
+      resolve(reviews);
+    })
+    .catch(error => {reject(error);})
   });
 }
 
@@ -92,7 +105,6 @@ const fillRestaurantHTML = (restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML(restaurant.operating_hours);
   }
-  fillReviewsHTML(restaurant.reviews);
 }
 
 /**
@@ -154,7 +166,7 @@ const createReviewHTML = (review) => {
   personReviewInfo.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.updatedAt).toDateString();
   personReviewInfo.appendChild(date);
 
   let reviewContent = document.createElement('div');
