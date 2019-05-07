@@ -226,10 +226,14 @@ class DBHelper {
   }
 
   updateCachedRestaurant(restaurant) {
-    //abrir el objeto restaurantes
-    //buscar por id
-    //actualizar la propiedad is_favorite
-    //persistir cambio.
+    this._dbPromise.then(db => {
+      if (!db) return;
+      const objectStore = db.transaction('restaurants', 'readwrite').objectStore('restaurants');
+      var objectStoreIdRequest = objectStore.get(restaurant.id);
+      objectStoreIdRequest.then(response => {
+        objectStore.put(restaurant);
+      });
+    });
   }
 
   updateRestaurant(restaurant) {
@@ -237,7 +241,7 @@ class DBHelper {
     return fetch(endpoint, {method: 'PUT'})
       .then(response => response.json())
       .then(updatedRestaurant => {
-        this.updateCachedRestaurant(restaurant);
+        this.updateCachedRestaurant(updatedRestaurant);
         return updatedRestaurant;
       })
   }

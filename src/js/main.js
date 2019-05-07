@@ -155,9 +155,9 @@ import L from 'leaflet';
     const toggleFavorite = document.createElement('div');
     toggleFavorite.setAttribute('tabindex', 0);
     toggleFavorite.setAttribute('role', 'button');
-    toggleFavorite.setAttribute('aria-pressed', restaurant.is_favorite);
+    toggleFavorite.setAttribute('aria-pressed', restaurant.is_favorite === "true");
     toggleFavorite.setAttribute('data-restaurant-id', restaurant.id);
-    toggleFavorite.className = `toggle-favorite ${restaurant.is_favorite ? 'favorite' : ''}`;
+    toggleFavorite.className = `toggle-favorite ${restaurant.is_favorite === "true" ? 'favorite' : ''}`;
     toggleFavorite.addEventListener('click', toggleFavoriteRestaurant);
     toggleFavorite.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -190,7 +190,7 @@ import L from 'leaflet';
   const toggleFavoriteRestaurant = (e) => {
     let restaurant = e.currentTarget;
     let restaurantId = restaurant.getAttribute('data-restaurant-id');
-    let isFavorite = restaurant.getAttribute('aria-pressed') == "true";
+    let isFavorite = restaurant.getAttribute('aria-pressed') === "true";
     
     if (restaurantId) {
       dbHelper.updateRestaurant({
