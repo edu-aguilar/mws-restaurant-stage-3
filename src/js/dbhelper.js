@@ -224,6 +224,23 @@ class DBHelper {
       }).catch(reject);
     });
   }
+
+  updateCachedRestaurant(restaurant) {
+    //abrir el objeto restaurantes
+    //buscar por id
+    //actualizar la propiedad is_favorite
+    //persistir cambio.
+  }
+
+  updateRestaurant(restaurant) {
+    let endpoint = `${DBHelper.APIURL('restaurants')}/${restaurant.restaurantId}/?is_favorite=${restaurant.isFavorite}`;
+    return fetch(endpoint, {method: 'PUT'})
+      .then(response => response.json())
+      .then(updatedRestaurant => {
+        this.updateCachedRestaurant(restaurant);
+        return updatedRestaurant;
+      })
+  }
 }
 
 export default DBHelper;

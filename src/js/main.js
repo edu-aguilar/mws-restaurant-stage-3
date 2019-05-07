@@ -152,8 +152,21 @@ import L from 'leaflet';
     restaurantDataWrapper.className = 'restaurant-info-wrapper';
     li.append(restaurantDataWrapper);
 
+    const toggleFavorite = document.createElement('div');
+    toggleFavorite.setAttribute('tabindex', 0);
+    toggleFavorite.setAttribute('role', 'button');
+    toggleFavorite.setAttribute('aria-pressed', restaurant.is_favorite);
+    toggleFavorite.setAttribute('data-restaurant-id', restaurant.id);
+    toggleFavorite.className = `toggle-favorite ${restaurant.is_favorite ? 'favorite' : ''}`;
+    toggleFavorite.addEventListener('click', toggleFavoriteRestaurant);
+    toggleFavorite.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/>
+      </svg>`;
+    restaurantDataWrapper.append(toggleFavorite);
+
     const name = document.createElement('h2');
-    name.innerHTML = restaurant.name;
+    name.textContent = restaurant.name;
     restaurantDataWrapper.append(name);
 
     const neighborhood = document.createElement('p');
@@ -166,11 +179,28 @@ import L from 'leaflet';
 
     const more = document.createElement('a');
     more.innerHTML = 'View Details';
+    more.className = ('restaurant-detail');
     more.href = DBHelper.urlForRestaurant(restaurant);
     more.setAttribute('aria-label', `View details of ${restaurant.name} restaurant`);
     li.append(more);
 
     return li;
+  }
+
+  const toggleFavoriteRestaurant = (e) => {
+    let restaurant = e.currentTarget;
+    let restaurantId = restaurant.getAttribute('data-restaurant-id');
+    let isFavorite = restaurant.getAttribute('aria-pressed') == "true";
+    
+    if (restaurantId) {
+      dbHelper.updateRestaurant({
+        restaurantId,
+        isFavorite: !isFavorite
+      }).then((updatedRestaurant) => {
+        restaurant.setAttribute('aria-pressed', updatedRestaurant.is_favorite);
+        restaurant.classList.toggle('favorite');
+      });
+    }
   }
 
   /**

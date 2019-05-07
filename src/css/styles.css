@@ -205,6 +205,20 @@ section.map-wrapper #map {
   grid-template-rows: auto 1fr 40px;
 }
 
+.restaurants li .toggle-favorite {
+  margin: 0 0 0 auto;
+  width: fit-content;
+}
+
+.restaurants li .toggle-favorite svg {
+  fill: lightgray;
+  stroke: black;
+}
+
+.restaurants li .toggle-favorite.favorite svg {
+  fill: yellow;
+}
+
 .restaurants li .restaurant-info-wrapper {
   padding: 1rem;
 }
@@ -228,7 +242,7 @@ section.map-wrapper #map {
   margin: 0;
   font-size: 11pt;
 }
-.restaurants li a {
+.restaurants li a.restaurant-detail {
   background-color: var(--orange-700, #D43900);
   color: #fff;
   font-size: 10pt;
