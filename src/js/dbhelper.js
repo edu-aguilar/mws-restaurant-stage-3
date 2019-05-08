@@ -282,13 +282,12 @@ class DBHelper {
         });
     })
 
-
     function firePendingRequest(request) {
       if (request.type === 'updateFavoriteRestaurant') {
         this.updateRestaurant(request.body).then(() => {
           let starEl = document.querySelector(`div[data-restaurant-id="${request.body.restaurantId}"]`);
-          starEl.setAttribute('aria-pressed', request.body.is_favorite);
-          starEl.classList.toggle('favorite');
+          starEl.setAttribute('aria-pressed', request.body.isFavorite);
+          starEl.classList.value = `toggle-favorite ${request.body.isFavorite ? 'favorite' : ''}`;
         })
       }
     }
