@@ -8,6 +8,8 @@ class DBHelper {
 
   constructor() {
     this._dbPromise = DBHelper.openDatabase();
+    this.connectionUp();
+    window.addEventListener('online', this.connectionUp.bind(this));
   }
   /**
    * API REST URL.
@@ -35,6 +37,10 @@ class DBHelper {
         db.createObjectStore('reviews', {
           keyPath: 'id',
         }).createIndex('restaurant_id', 'restaurant_id', {unique: false});
+        db.createObjectStore('pendingRequests', {
+          keyPath: 'id',
+          autoIncrement: true
+        });
       }
     });
 
@@ -237,14 +243,58 @@ class DBHelper {
   }
 
   updateRestaurant(restaurant) {
-    let endpoint = `${DBHelper.APIURL('restaurants')}/${restaurant.restaurantId}/?is_favorite=${restaurant.isFavorite}`;
-    return fetch(endpoint, {method: 'PUT'})
+    const endpoint = `${DBHelper.APIURL('restaurants')}/${restaurant.restaurantId}/?is_favorite=${restaurant.isFavorite}`;
+    const httpMethod = 'PUT';
+    return fetch(endpoint, {method: httpMethod})
       .then(response => response.json())
       .then(updatedRestaurant => {
         this.updateCachedRestaurant(updatedRestaurant);
         return updatedRestaurant;
       })
+      .catch(() => {
+        this.createPendingRequest({
+          body: restaurant,
+          type: 'updateFavoriteRestaurant'
+        });
+      });
   }
+
+  createPendingRequest(request) {
+    //TO DO: notify user that connection is not available and the request will be done when connection will be up again.
+
+    this._dbPromise.then(db => {
+      if (!db) return;
+      const tx = db.transaction('pendingRequests', 'readwrite');
+      tx.store.put(request);
+    });
+  }
+
+  connectionUp() {
+    var _this = this;
+    
+    this._dbPromise.then(db => {
+      db.transaction('pendingRequests', 'readwrite').store.openCursor()
+        .then(function iterate(cursor) {
+          if (!cursor) return;
+          firePendingRequest.call(_this, cursor.value);
+          cursor.delete();
+          return cursor.continue().then(iterate);
+        });
+    })
+
+
+    function firePendingRequest(request) {
+      if (request.type === 'updateFavoriteRestaurant') {
+        this.updateRestaurant(request.body).then(() => {
+          let starEl = document.querySelector(`div[data-restaurant-id="${request.body.restaurantId}"]`);
+          starEl.setAttribute('aria-pressed', request.body.is_favorite);
+          starEl.classList.toggle('favorite');
+        })
+      }
+    }
+
+  }
+
 }
 
 export default DBHelper;
