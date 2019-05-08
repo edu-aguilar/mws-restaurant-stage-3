@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   dbHelper = new DBHelper();
   
   header.setBehavior();
+  setNewReviewForm();
+
   fetchRestaurantFromURL()
     .then((restaurant = _restaurant) => {
       _restaurant = restaurant;
@@ -210,6 +212,31 @@ const getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+const setNewReviewForm = () => {
+
+  document.querySelector('#new-review').addEventListener('click', addReview);
+  document.querySelector('#review-username').addEventListener('keyup', checkButtonStatus);
+  document.querySelector('#review-comments').addEventListener('keyup', checkButtonStatus);
+
+  function checkButtonStatus(e) {
+    let username = document.querySelector('#review-username').value;
+    let comments = document.querySelector('#review-comments').value;
+    document.querySelector('#new-review').disabled = username.trim().length === 0 || comments.trim().length === 0;
+  }
+
+  function addReview(e) {
+    e.preventDefault();
+    let newReview = {
+      username: document.querySelector('#review-username').value,
+      comments: document.querySelector('#review-comments').value,
+      rating: document.querySelector('#review-rating').value,
+      date: new Date().getTime()
+    }
+    console.log(newReview);
+    
+  }
 }
 
 })();

@@ -41,6 +41,25 @@
       <p id="restaurant-cuisine" class="restaurant-cuisine"></p>
       <p id="restaurant-address" tabindex="0"></p>
       <table id="restaurant-hours" class="restaurant-hours"></table>
+
+      <section class="new-review">
+        <form tabindex="0" aria-label="Add review to restaurant">
+          <fieldset>
+            <legend>Add review to restaurant</legend>
+            <input id="review-username" type="text" placeholder="Your name">
+            <textarea id="review-comments" placeholder="Comments"></textarea>
+            <label for="review-rating">rating</label>
+            <select id="review-rating">
+              <option value ="1">1</option>
+              <option value ="2">2</option>
+              <option value ="3" selected>3</option>
+              <option value ="4">4</option>
+              <option value ="5">5</option>
+            </select>
+            <button id="new-review" disabled>Add review</button>
+          </fieldset>
+        </form>
+      </section>
     </section>
 
     <section id="reviews-container" class="reviews-wrapper" role="region">
