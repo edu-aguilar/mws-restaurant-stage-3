@@ -10,7 +10,22 @@ class DBHelper {
     this._dbPromise = DBHelper.openDatabase();
     this.connectionUp();
     window.addEventListener('online', this.connectionUp.bind(this));
+    window.addEventListener('offline', this.handleOffline);
   }
+
+  handleOffline() {
+    //known ios bug!!! https://developer.mozilla.org/es/docs/Web/Accessibility/ARIA/ARIA_Live_Regions#Preferring_Specialized_Live_Region_Roles
+    let connectionAlert = document.querySelector('#connectionAlert');
+    connectionAlert.setAttribute("role", "alert");
+    connectionAlert.setAttribute("aria-live", "assertive");
+    connectionAlert.classList.toggle('active');
+    connectionAlert.focus();
+
+    setTimeout(() => {
+      connectionAlert.classList.toggle('active');
+    }, 6000);
+  }
+
   /**
    * API REST URL.
    */
