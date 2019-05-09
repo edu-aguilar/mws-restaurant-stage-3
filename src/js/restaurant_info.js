@@ -234,8 +234,7 @@ const setNewReviewForm = () => {
       rating: document.querySelector('#review-rating').value,
       comments: document.querySelector('#review-comments').value
     }
-    dbHelper
-      .addRestaurantReview(newReview)
+    dbHelper.addRestaurantReview(newReview)
       .then(newReview => {
         fillReviewsHTML([newReview]);
       });

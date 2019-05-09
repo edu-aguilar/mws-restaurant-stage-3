@@ -275,8 +275,6 @@ class DBHelper {
   }
 
   createPendingRequest(request) {
-    //TO DO: notify user that connection is not available and the request will be done when connection will be up again.
-
     this._dbPromise.then(db => {
       if (!db) return;
       const tx = db.transaction('pendingRequests', 'readwrite');
@@ -305,6 +303,9 @@ class DBHelper {
           starEl.classList.value = `toggle-favorite ${request.body.isFavorite ? 'favorite' : ''}`;
         })
       }
+      if (request.type === 'addRestaurantReview') {
+        this.addRestaurantReview(request.body);
+      }
     }
 
   }
@@ -312,15 +313,20 @@ class DBHelper {
   addRestaurantReview(review) {
     const endpoint = `${DBHelper.APIURL('reviews')}`;
     const httpMethod = 'POST';
-    return fetch(endpoint, {
-        method: httpMethod,
-        body: JSON.stringify(review)
-      })
+    return fetch(endpoint, {method: httpMethod, body: JSON.stringify(review)})
+      .catch(persistRequest.bind(this))
       .then(response => response.json())
       .then(newReview => {
         this.cacheReviews([newReview]);
         return newReview;
-      })
+      });
+
+    function persistRequest() {
+      this.createPendingRequest({
+        body: review,
+        type: 'addRestaurantReview'
+      });
+    }
   }
 
 }
