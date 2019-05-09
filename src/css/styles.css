@@ -27,7 +27,7 @@ header {
   background-color: #252831;
   padding: 5px 0;
   position: fixed;
-  z-index: 100;
+  z-index: 2000;
   transition: top 0.3s;
   top: 0;
   width: 100%;
@@ -43,7 +43,7 @@ header {
   position: fixed;
   top: 1rem;
   left: -300px;
-  z-index: 500;
+  z-index: 2500;
   width: 300px;
   height: var(--header-height, 67px);
   background-color: #F31431;
