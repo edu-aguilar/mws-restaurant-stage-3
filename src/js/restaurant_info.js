@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   dbHelper = new DBHelper();
   
   header.setBehavior();
-  setNewReviewForm();
+  createNewReviewForm();
 
   fetchRestaurantFromURL()
     .then((restaurant = _restaurant) => {
@@ -216,7 +216,7 @@ const getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-const setNewReviewForm = () => {
+const createNewReviewForm = () => {
 
   document.querySelector('#new-review').addEventListener('click', addReview);
   document.querySelector('#review-username').addEventListener('keyup', checkButtonStatus);
@@ -229,17 +229,25 @@ const setNewReviewForm = () => {
   }
 
   function addReview(e) {
+    let nameEl = document.querySelector('#review-username');
+    let commentsEl = document.querySelector('#review-comments');
     e.preventDefault();
     let newReview = {
       restaurant_id: _restaurant.id,
-      name: document.querySelector('#review-username').value,
+      name: nameEl.value,
       rating: document.querySelector('#review-rating').value,
-      comments: document.querySelector('#review-comments').value
+      comments: commentsEl.value
     }
     dbHelper.addRestaurantReview(newReview)
       .then(newReview => {
         fillReviewsHTML([newReview]);
-      });
+      })
+      .finally(emptynewReviewForm);
+
+    function emptynewReviewForm() {
+      nameEl.value = "";
+      commentsEl.value = "";
+    }
   }
 }
 
