@@ -13,6 +13,9 @@ class DBHelper {
     window.addEventListener('offline', this.handleOffline);
   }
 
+  /**
+   * this method shows an alert box when user connection is lost
+   */
   handleOffline() {
     //known ios bug!!! https://developer.mozilla.org/es/docs/Web/Accessibility/ARIA/ARIA_Live_Regions#Preferring_Specialized_Live_Region_Roles
     let connectionAlert = document.querySelector('#connectionAlert');
@@ -108,6 +111,9 @@ class DBHelper {
       })
   }
 
+  /**
+   * Fetch all restaurants by from API REST
+   */
   fetchRestaurantsByIdFromAPI(id) {
     return fetch(`${DBHelper.APIURL()}/${id}`)
       .then(response => response.json())
@@ -246,6 +252,9 @@ class DBHelper {
     });
   }
 
+  /**
+   * After we create a new review to a restaurant, the IDB collection is updated
+   */
   updateCachedRestaurant(restaurant) {
     this._dbPromise.then(db => {
       if (!db) return;
@@ -257,6 +266,9 @@ class DBHelper {
     });
   }
 
+  /**
+   * fetching API to decide if the restaurant is favorite or not.
+   */
   updateRestaurant(restaurant) {
     const endpoint = `${DBHelper.APIURL('restaurants')}/${restaurant.restaurantId}/?is_favorite=${restaurant.isFavorite}`;
     const httpMethod = 'PUT';
@@ -274,6 +286,9 @@ class DBHelper {
       });
   }
 
+  /**
+   * this method push pending API requests to idb
+   */
   createPendingRequest(request) {
     this._dbPromise.then(db => {
       if (!db) return;
@@ -282,6 +297,9 @@ class DBHelper {
     });
   }
 
+  /**
+   * when connection comes back, we perform all pending request done while offline
+   */
   connectionUp() {
     var _this = this;
     
@@ -317,6 +335,9 @@ class DBHelper {
 
   }
 
+  /**
+   * create a new review for a restaurant
+   */
   addRestaurantReview(review) {
     const endpoint = `${DBHelper.APIURL('reviews')}`;
     const httpMethod = 'POST';
