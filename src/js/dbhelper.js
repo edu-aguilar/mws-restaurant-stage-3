@@ -64,20 +64,11 @@ class DBHelper {
 
   }
 
-  cacheRestaurants(restaurants) {
-
+  cacheIdbCollection(storeName, collection) {
     this._dbPromise.then(db => {
       if (!db) return;
-      const tx = db.transaction('restaurants', 'readwrite');
-      restaurants.forEach(restaurant => tx.store.put(restaurant));
-    });
-  }
-
-  cacheReviews(reviews) {
-    this._dbPromise.then(db => {
-      if (!db) return;
-      const tx = db.transaction('reviews', 'readwrite');
-      reviews.forEach(review => tx.store.put(review));
+      const tx = db.transaction(storeName, 'readwrite');
+      collection.forEach(item => tx.store.put(item));
     });
   }
 
@@ -106,19 +97,19 @@ class DBHelper {
     return fetch(DBHelper.APIURL())
       .then(response => response.json())
       .then(restaurants => {
-        this.cacheRestaurants(restaurants);
+        this.cacheIdbCollection('restaurants', restaurants);
         return restaurants;
       })
   }
 
   /**
-   * Fetch all restaurants by from API REST
+   * Fetch all restaurants by id from API REST
    */
   fetchRestaurantsByIdFromAPI(id) {
     return fetch(`${DBHelper.APIURL()}/${id}`)
       .then(response => response.json())
       .then(restaurant => {
-        this.cacheRestaurants([restaurant]);
+        this.cacheIdbCollection('restaurants', [restaurant]);
         return restaurant;
       })
   }
@@ -219,7 +210,6 @@ class DBHelper {
     return marker;
   }
 
-
   /**
    * Fetch all reviews available of given restaurant from API
    */
@@ -227,7 +217,7 @@ class DBHelper {
     return fetch(`${DBHelper.APIURL('reviews')}/?restaurant_id=${restaurantId}`)
       .then(response => response.json())
       .then(reviews => {
-        this.cacheReviews(reviews);
+        this.cacheIdbCollection('reviews', reviews);
         return reviews;
       })
   }
@@ -345,7 +335,7 @@ class DBHelper {
       .catch(persistRequest.bind(this))
       .then(response => response.json())
       .then(newReview => {
-        this.cacheReviews([newReview]);
+        this.cacheIdbCollection('reviews', [newReview]);
         return newReview;
       });
 
