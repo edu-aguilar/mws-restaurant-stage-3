@@ -70,7 +70,7 @@ class DBHelper {
     });
   }
 
-  cacheReviews(id, reviews) {
+  cacheReviews(reviews) {
     this._dbPromise.then(db => {
       if (!db) return;
       const tx = db.transaction('reviews', 'readwrite');
@@ -221,7 +221,7 @@ class DBHelper {
     return fetch(`${DBHelper.APIURL('reviews')}/?restaurant_id=${restaurantId}`)
       .then(response => response.json())
       .then(reviews => {
-        this.cacheReviews(restaurantId, reviews);
+        this.cacheReviews(reviews);
         return reviews;
       })
   }
@@ -307,6 +307,20 @@ class DBHelper {
       }
     }
 
+  }
+
+  addRestaurantReview(review) {
+    const endpoint = `${DBHelper.APIURL('reviews')}`;
+    const httpMethod = 'POST';
+    return fetch(endpoint, {
+        method: httpMethod,
+        body: JSON.stringify(review)
+      })
+      .then(response => response.json())
+      .then(newReview => {
+        this.cacheReviews([newReview]);
+        return newReview;
+      })
   }
 
 }

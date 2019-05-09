@@ -229,13 +229,16 @@ const setNewReviewForm = () => {
   function addReview(e) {
     e.preventDefault();
     let newReview = {
-      username: document.querySelector('#review-username').value,
-      comments: document.querySelector('#review-comments').value,
+      restaurant_id: _restaurant.id,
+      name: document.querySelector('#review-username').value,
       rating: document.querySelector('#review-rating').value,
-      date: new Date().getTime()
+      comments: document.querySelector('#review-comments').value
     }
-    console.log(newReview);
-    
+    dbHelper
+      .addRestaurantReview(newReview)
+      .then(newReview => {
+        fillReviewsHTML([newReview]);
+      });
   }
 }
 
