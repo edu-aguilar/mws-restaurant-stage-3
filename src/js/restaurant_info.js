@@ -1,12 +1,11 @@
 import header from './header';
 import DBHelper from './dbhelper';
 import L from 'leaflet';
-
 (function(){
-
-var _restaurant;
-var _newMap;
-var dbHelper;
+  
+  var _restaurant;
+  var _newMap;
+  var dbHelper;
 
 /**
  * Initialize map as soon as the page is loaded.
@@ -243,5 +242,7 @@ const setNewReviewForm = () => {
       });
   }
 }
+
+window._fillReviewsHTML = fillReviewsHTML;
 
 })();

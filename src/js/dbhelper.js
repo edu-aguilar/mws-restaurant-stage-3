@@ -304,7 +304,14 @@ class DBHelper {
         })
       }
       if (request.type === 'addRestaurantReview') {
-        this.addRestaurantReview(request.body);
+        this.addRestaurantReview(request.body).then((createdReview) => {
+          //update DOM if we are in the current restaurant detail
+          let searchParams = new URLSearchParams(location.search);
+          let currentRestaurantId = searchParams.get('id');
+          if (currentRestaurantId == createdReview.restaurant_id) {
+            window._fillReviewsHTML([createdReview]);
+          }
+        })
       }
     }
 
